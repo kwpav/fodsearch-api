@@ -1,0 +1,29 @@
+* Fodsearch API
+The fodmap ingredient API.
+** About
+Information about low fodmap ingredients are scattered about the web, in plain text, images, web apps, etc. This API is an effort to put all low fodmap ingredients into a single place to make them easier to find.
+
+This is a work in progress!
+** Starting
+To start the server from the CLI run:
+#+begin_src sh
+clj -M:start
+#+end_src
+
+This starts a server at =localhost:3000=
+** Using
+*** GET =/api/v1/health=
+A health check (this should return true!)
+#+begin_src sh
+curl "http://localhost:3000/api/ingredients"
+#+end_src
+*** GET =/api/v1/ingredients/=
+Get list of all ingredients
+#+begin_src sh
+curl "http://localhost:3000/api/ingredients"
+#+end_src
+*** GET =/api/v1/ingredients/:ingredient-id=
+Get a single ingredient by its id
+#+begin_src sh
+curl "http://localhost:3000/api/ingredients/1"
+#+end_src
