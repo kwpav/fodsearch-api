@@ -17,13 +17,33 @@ A health check (this should return true!)
 #+begin_src sh
 curl "http://localhost:3000/api/ingredients"
 #+end_src
-*** GET =/api/v1/ingredients/=
-Get list of all ingredients
+*** GET =/api/v1/ingredients=
+Get list of all ingredients.
 #+begin_src sh
 curl "http://localhost:3000/api/ingredients"
 #+end_src
 *** GET =/api/v1/ingredients/:ingredient-id=
-Get a single ingredient by its id
+Get a single ingredient by its id.
 #+begin_src sh
 curl "http://localhost:3000/api/ingredients/1"
+#+end_src
+*** GET =/api/v1/categories=
+Get a list of all categories.
+#+begin_src sh
+curl "http://localhost:3000/api/categories"
+#+end_src
+*** GET =/api/v1/categories/:category-id=
+Get a single category by its id.
+#+begin_src sh
+curl "http://localhost:3000/api/categories/1"
+#+end_src
+*** GET =/api/v1/types=
+Get a list of all types.
+#+begin_src sh
+curl "http://localhost:3000/api/types"
+#+end_src
+*** GET =/api/v1/types/:type-id=
+Get a single category by its id.
+#+begin_src sh
+curl "http://localhost:3000/api/types/1"
 #+end_src
