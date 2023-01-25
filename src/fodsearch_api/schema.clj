@@ -9,12 +9,10 @@
   [:enum
    "vegetable"
    "fruit"
-   "cereal, grain, nut, seed, flower"
-   "meat, egg, legume, soy protein"
-   "dairy alternative"
-   "sweetener, sauce, condiment"
-   "sweet, snack"
-   "drink"])
+   "cereal/grain/nut/seed/flour"
+   "meat/eggs/legumes/soy protein"
+   "dairy and alternatives"
+   "sweeteners/sauces/condiments"])
 
 (def Ingredient
   [:map
