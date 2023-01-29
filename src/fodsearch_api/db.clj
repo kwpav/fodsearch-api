@@ -132,7 +132,7 @@ CREATE TABLE IF NOT EXISTS ingredient (
                      :values      ingredients}]
     (exec! query)))
 
-(defn init-db
+(defn init-db!
   "Initialize the database.
   Creates tables and inserts data from `resources/ingredients.csv`"
   []
@@ -143,10 +143,25 @@ CREATE TABLE IF NOT EXISTS ingredient (
      :types-categories types-categories
      :ingredients      ingredients}))
 
+(defn reset-db!
+  "Drop all tables, recreate them, and insert data."
+  []
+    (jdbc/execute! conn ["
+DROP TABLE IF EXISTS ingredient
+"])
+  (jdbc/execute! conn ["
+DROP TABLE IF EXISTS category
+"])
+  (jdbc/execute! conn ["
+DROP TABLE IF EXISTS type
+"])
+  (init-db!))
+
 (comment
   (create-tables)
   (insert-types-categories-data!)
-  (init-db)
+  (init-db!)
+  (reset-db!)
 
   (jdbc/execute! conn ["
 DROP TABLE category
@@ -155,8 +170,9 @@ DROP TABLE category
 DROP TABLE type
 "])
   (jdbc/execute! conn ["
-DROP TABLE ingredient
+DROP TABLE ingredient CASCADE
 "])
   (jdbc/execute! conn ["SELECT * FROM type"])
   (jdbc/execute! conn ["SELECT * FROM category"])
+  (jdbc/execute! conn ["SELECT * FROM ingredient"])
   ,)
