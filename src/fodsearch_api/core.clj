@@ -13,8 +13,8 @@
    [ring.adapter.jetty :as jetty]))
 
 (defn get-ingredients-handler
-  [_request]
-  (let [ingredients (ingredient/get-all)]
+  [{{{q :q} :query} :parameters :as _request}]
+  (let [ingredients (if q (ingredient/search q) (ingredient/get-all))]
     {:status 200
      :body   {:ingredients ingredients}}))
 
@@ -146,108 +146,112 @@
          :responses {200 {:body [:map [:healthy boolean?]]}}
          :handler   (fn [_] {:status 200
                              :body   {:healthy true}})}}]
-      ["/ingredients/:ingredient-id"
-       {:get
-        {:name       ::get-ingredient
-         :parameters {:path [:map [:ingredient-id int?]]}
-         :responses  {200 {:body [:map [:ingredient ingredient/Ingredient]]}
-                      404 {:body nil?}}
-         :handler    get-ingredient-handler}
-        :delete
-        {:name       ::delete-ingredient
-         :parameters {:path [:map [:ingredient-id int?]]}
-         :responses  {204 {:body nil?}
-                      404 {:body nil?}}
-         :handler    delete-ingredient-handler}
-        :put
-        {:name       ::edit-ingredient
-         :parameters {:path [:map [:ingredient-id int?]]
-                      :body any?}
-         :response   {200 {:body [:map [:ingredient ingredient/Ingredient]]}
-                      201 {:body [:map [:ingredient ingredient/Ingredient]]}}
-         :handler    edit-ingredient-handler}}]
       ["/ingredients"
-       {:get
-        {:name      ::get-ingredients
-         :responses {200 {:body [:map
-                                 [:ingredients [:vector ingredient/Ingredient]]]}}
-         :handler   get-ingredients-handler}
-        :post
-        {:name       ::create-ingredient
-         :parameters {:body [:map
-                             [:name string?]
-                             [:category string?]
-                             [:type string?]
-                             [:info {:optional true} string?]]}
-         :responses  {201 {:body [:map
-                                  [:ingredient ingredient/Ingredient]]}}
-         :handler    create-ingredient-handler}}]
+       [""
+        {:get
+         {:name      ::get-ingredients
+          :parameters {:query [:map [:q {:optional true} string?]]}
+          :responses {200 {:body [:map
+                                  [:ingredients [:vector ingredient/Ingredient]]]}}
+          :handler   get-ingredients-handler}
+         :post
+         {:name       ::create-ingredient
+          :parameters {:body [:map
+                              [:name string?]
+                              [:category string?]
+                              [:type string?]
+                              [:info {:optional true} string?]]}
+          :responses  {201 {:body [:map
+                                   [:ingredient ingredient/Ingredient]]}}
+          :handler    create-ingredient-handler}}]
+       ["/:ingredient-id"
+        {:get
+         {:name       ::get-ingredient
+          :parameters {:path [:map [:ingredient-id int?]]}
+          :responses  {200 {:body [:map [:ingredient ingredient/Ingredient]]}
+                       404 {:body nil?}}
+          :handler    get-ingredient-handler}
+         :delete
+         {:name       ::delete-ingredient
+          :parameters {:path [:map [:ingredient-id int?]]}
+          :responses  {204 {:body nil?}
+                       404 {:body nil?}}
+          :handler    delete-ingredient-handler}
+         :put
+         {:name       ::edit-ingredient
+          :parameters {:path [:map [:ingredient-id int?]]
+                       :body any?}
+          :response   {200 {:body [:map [:ingredient ingredient/Ingredient]]}
+                       201 {:body [:map [:ingredient ingredient/Ingredient]]}}
+          :handler    edit-ingredient-handler}}]]
       ["/types"
-       {:get
-        {:name      ::get-types
-         :responses {200 {:body [:map
-                                 [:types [:vector type/Type]]]}}
-         :handler   get-types-handler}
-        :post
-        {:name       ::create-type
-         :parameters {:body [:map
-                             [:name string?]]}
-         :responses  {201 {:body [:map
-                                  [:type type/Type]]}}
-         :handler    create-type-handler}}]
-      ["/types/:type-id"
-       {:get
-        {:name       ::get-type
-         :parameters {:path [:map [:type-id int?]]}
-         :responses  {200 {:body [:map [:type type/Type]]}
-                      404 {:body nil?}}
-         :handler    get-type-handler}
-        :delete
-        {:name       ::delete-type
-         :parameters {:path [:map [:type-id int?]]}
-         :responses  {204 {:body nil?}
-                      404 {:body nil?}}
-         :handler    delete-type-handler}
-        :put
-        {:name       ::edit-type
-         :parameters {:path [:map [:type-id int?]]
-                      :body any?}
-         :response   {200 {:body [:map [:type type/Type]]}
-                      201 {:body [:map [:type type/Type]]}}
-         :handler    edit-type-handler}}]
+       [""
+        {:get
+         {:name      ::get-types
+          :responses {200 {:body [:map
+                                  [:types [:vector type/Type]]]}}
+          :handler   get-types-handler}
+         :post
+         {:name       ::create-type
+          :parameters {:body [:map
+                              [:name string?]]}
+          :responses  {201 {:body [:map
+                                   [:type type/Type]]}}
+          :handler    create-type-handler}}]
+       ["/:type-id"
+        {:get
+         {:name       ::get-type
+          :parameters {:path [:map [:type-id int?]]}
+          :responses  {200 {:body [:map [:type type/Type]]}
+                       404 {:body nil?}}
+          :handler    get-type-handler}
+         :delete
+         {:name       ::delete-type
+          :parameters {:path [:map [:type-id int?]]}
+          :responses  {204 {:body nil?}
+                       404 {:body nil?}}
+          :handler    delete-type-handler}
+         :put
+         {:name       ::edit-type
+          :parameters {:path [:map [:type-id int?]]
+                       :body any?}
+          :response   {200 {:body [:map [:type type/Type]]}
+                       201 {:body [:map [:type type/Type]]}}
+          :handler    edit-type-handler}}]]
       ["/categories"
-       {:get
-        {:name      ::get-categories
-         :responses {200 {:body [:map
-                                 [:categories [:vector category/Category]]]}}
-         :handler   get-categories-handler}
-        :post
-        {:name       ::create-category
-         :parameters {:body [:map
-                             [:name string?]]}
-         :responses  {201 {:body [:map
-                                  [:category category/Category]]}}
-         :handler    create-category-handler}}]
-      ["/categories/:category-id"
-       {:get
-        {:name       ::get-category
-         :parameters {:path [:map [:category-id int?]]}
-         :responses  {200 {:body [:map [:category category/Category]]}
-                      404 {:body nil?}}
-         :handler    get-category-handler}
-        :delete
-        {:name       ::delete-type
-         :parameters {:path [:map [:category-id int?]]}
-         :responses  {204 {:body nil?}
-                      404 {:body nil?}}
-         :handler    delete-category-handler}
-        :put
-        {:name       ::edit-category
-         :parameters {:path [:map [:category-id int?]]
-                      :body any?}
-         :response   {200 {:body [:map [:category category/Category]]}
-                      201 {:body [:map [:category category/Category]]}}
-         :handler    edit-category-handler}}]]]
+       [""
+        {:get
+         {:name      ::get-categories
+          :responses {200 {:body [:map
+                                  [:categories [:vector category/Category]]]}}
+          :handler   get-categories-handler}
+         :post
+         {:name       ::create-category
+          :parameters {:body [:map
+                              [:name string?]]}
+          :responses  {201 {:body [:map
+                                   [:category category/Category]]}}
+          :handler    create-category-handler}}]
+       ["/:category-id"
+        {:get
+         {:name       ::get-category
+          :parameters {:path [:map [:category-id int?]]}
+          :responses  {200 {:body [:map [:category category/Category]]}
+                       404 {:body nil?}}
+          :handler    get-category-handler}
+         :delete
+         {:name       ::delete-type
+          :parameters {:path [:map [:category-id int?]]}
+          :responses  {204 {:body nil?}
+                       404 {:body nil?}}
+          :handler    delete-category-handler}
+         :put
+         {:name       ::edit-category
+          :parameters {:path [:map [:category-id int?]]
+                       :body any?}
+          :response   {200 {:body [:map [:category category/Category]]}
+                       201 {:body [:map [:category category/Category]]}}
+          :handler    edit-category-handler}}]]]]
     {:data {:coercion   reitit.coercion.malli/coercion
             :muuntaja   mc/instance
             :middleware [parameters/parameters-middleware
