@@ -1,29 +1,12 @@
-(ns fodsearch-api.db
+(ns fodsearch-api.db.init
   (:require
+   [fodsearch-api.db.db :as db]
    [clojure.data.csv :as csv]
    [clojure.java.io :as io]
    [honey.sql :as sql]
    [next.jdbc :as jdbc]))
 
-;; run psql with cmd:
-;; docker run -it --rm --network fodsearch-api_default --link fodsearch-api-db-1:postgres postgres psql -h postgres -U postgres
-
-(def db {:dbtype   "postgresql"
-         :dbname   "testdb"
-         :user     "postgres"
-         :password "unsafe"
-         :port     3002})
-
-(def conn (jdbc/get-datasource db))
-
-(defn exec!
-  "Execute a HoneySQL query."
-  [query]
-  (->> query
-       sql/format
-       (jdbc/execute! conn)))
-
-(defn create-tables
+(defn- create-tables!
   []
   (let [type-table
         "
@@ -52,11 +35,11 @@ CREATE TABLE IF NOT EXISTS ingredient (
     FOREIGN KEY(type_id)
     REFERENCES type(id)
 )"]
-    (jdbc/execute! conn [type-table])
-    (jdbc/execute! conn [category-table])
-    (jdbc/execute! conn [ingredient-table])))
+    (jdbc/execute! db/conn [type-table])
+    (jdbc/execute! db/conn [category-table])
+    (jdbc/execute! db/conn [ingredient-table])))
 
-(defn read-ingredients-csv
+(defn- read-ingredients-csv
   "All ingredient data is in `resources/ingredients.csv`.
   This reads the csv and puts it into a map so it can be
   easily inserted into the DB with HoneySQL."
@@ -80,7 +63,7 @@ CREATE TABLE IF NOT EXISTS ingredient (
        distinct
        (mapv vals)))
 
-(defn insert-types-categories-data!
+(defn- insert-types-categories-data!
   "Insert the types and categories from the csv into the DB.
   This needs to be done before inserting the ingredients
   because they are FKs on the `ingredient` table."
@@ -96,7 +79,7 @@ CREATE TABLE IF NOT EXISTS ingredient (
                           :values      categories}
         queries           (map sql/format [types-query categories-query])]
     (doseq [query queries]
-      (jdbc/execute! conn query))))
+      (jdbc/execute! db/conn query))))
 
 (defn- ingredient-csv->sql
   "Helper function to turn ingredient csv data
@@ -108,13 +91,13 @@ CREATE TABLE IF NOT EXISTS ingredient (
                (-> ingredient
                    (assoc :type_id
                           (:type/id
-                           (first (exec!
+                           (first (db/exec!
                                    {:select [:type/id]
                                     :from   [:type]
                                     :where  [:= :type/name type]}))))
                    (assoc :category_id
                           (:category/id
-                           (first (exec!
+                           (first (db/exec!
                                    {:select [:category/id]
                                     :from   [:category]
                                     :where  [:= :category/name category]}))))
@@ -122,7 +105,7 @@ CREATE TABLE IF NOT EXISTS ingredient (
                    (dissoc :type)))
         csv-data))
 
-(defn insert-ingredients-data!
+(defn- insert-ingredients-data!
   "Insert the ingredient data from the csv.
   Needs to be run after types and categories have been inserted."
   []
@@ -130,13 +113,13 @@ CREATE TABLE IF NOT EXISTS ingredient (
         ingredients (ingredient-csv->sql data)
         query       {:insert-into [:ingredient]
                      :values      ingredients}]
-    (exec! query)))
+    (db/exec! query)))
 
 (defn init-db!
   "Initialize the database.
   Creates tables and inserts data from `resources/ingredients.csv`"
   []
-  (let [tables           (create-tables)
+  (let [tables           (create-tables!)
         types-categories (insert-types-categories-data!)
         ingredients      (insert-ingredients-data!)]
     {:tables           tables
@@ -146,33 +129,24 @@ CREATE TABLE IF NOT EXISTS ingredient (
 (defn reset-db!
   "Drop all tables, recreate them, and insert data."
   []
-    (jdbc/execute! conn ["
+    (jdbc/execute! db/conn ["
 DROP TABLE IF EXISTS ingredient
 "])
-  (jdbc/execute! conn ["
+  (jdbc/execute! db/conn ["
 DROP TABLE IF EXISTS category
 "])
-  (jdbc/execute! conn ["
+  (jdbc/execute! db/conn ["
 DROP TABLE IF EXISTS type
 "])
   (init-db!))
 
 (comment
-  (create-tables)
+  (create-tables!)
   (insert-types-categories-data!)
   (init-db!)
   (reset-db!)
 
-  (jdbc/execute! conn ["
-DROP TABLE category
-"])
-  (jdbc/execute! conn ["
-DROP TABLE type
-"])
-  (jdbc/execute! conn ["
-DROP TABLE ingredient CASCADE
-"])
-  (jdbc/execute! conn ["SELECT * FROM type"])
-  (jdbc/execute! conn ["SELECT * FROM category"])
-  (jdbc/execute! conn ["SELECT * FROM ingredient"])
+  (jdbc/execute! db/conn ["SELECT * FROM type"])
+  (jdbc/execute! db/conn ["SELECT * FROM category"])
+  (jdbc/execute! db/conn ["SELECT * FROM ingredient"])
   ,)
