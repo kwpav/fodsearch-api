@@ -31,8 +31,6 @@
   [{{{id :ingredient-id} :path
      updated-ingredient  :body} :parameters :as _request}]
   (let [ingredient (ingredient/find-one :id id)]
-    (println "ID")
-    (println (into {:id id} updated-ingredient))
     (if ingredient
       {:status 200
        :body   {:ingredient (ingredient/edit (into {:id id} updated-ingredient))}}
@@ -55,7 +53,7 @@
                     :category category
                     :type     type}]
     {:status 201
-     :body   (ingredient/create ingredient)}))
+     :body   {:ingredient (ingredient/create ingredient)}}))
 
 (defn get-types-handler
   [_request]
@@ -253,6 +251,7 @@
     {:data {:coercion   reitit.coercion.malli/coercion
             :muuntaja   mc/instance
             :middleware [parameters/parameters-middleware
+                         mmw/format-middleware
                          rrc/coerce-exceptions-middleware
                          mmw/format-request-middleware
                          rrc/coerce-request-middleware
@@ -278,13 +277,15 @@
   (start-server)
   (stop-server)
 
+  ;; NOTE!
+  ;; Need to comment out `mmw/format-middleware` for requests with `body-params` to work
   ;; CRUD operations for ingredient(s)
   ;; CREATE
   ;; 201 response
   (app {:request-method :post
         :uri            "/api/v1/ingredients"
-        :body-params    {:name     "testing"
-                         :category "vegetable"
+        :body-params    {:name     "testing343"
+                         :category "fruit"
                          :type     "safe"
                          :info     "hello world"}})
   ;; READ
