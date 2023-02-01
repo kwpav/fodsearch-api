@@ -35,6 +35,12 @@
 (m/=> get-all
       [:=> :cat [:vector Ingredient]])
 
+(defn search
+  "Search for an ingredient that matches the given query string."
+  [query]
+  (let [ingredients (repo/search query)]
+    (mapv ingredient->json ingredients)))
+
 (defn find-one
   "Get a single ingredient by its value."
   [by value]
