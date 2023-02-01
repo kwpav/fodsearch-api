@@ -11,39 +11,96 @@ clj -M:start
 #+end_src
 
 This starts a server at =localhost:3000=
-** Using
-*** GET =/api/v1/health=
+** Endpoints
+*** Health
+**** GET =/api/v1/health=
 A health check (this should return true!)
 #+begin_src sh
 curl "http://localhost:3000/api/ingredients"
 #+end_src
-*** GET =/api/v1/ingredients=
+*** Ingredients
+**** GET =/api/v1/ingredients=
 Get list of all ingredients.
 #+begin_src sh
 curl "http://localhost:3000/api/ingredients"
 #+end_src
-*** GET =/api/v1/ingredients/:ingredient-id=
+**** GET =/api/v1/ingredients?q=melon=
+Search for ingredients that match the query =q=
+#+begin_src sh
+curl "http://localhost:3000/api/ingredients?q=melon"
+#+end_src
+**** GET =/api/v1/ingredients/:ingredient-id=
 Get a single ingredient by its id.
 #+begin_src sh
 curl "http://localhost:3000/api/ingredients/1"
 #+end_src
-*** GET =/api/v1/categories=
-Get a list of all categories.
+**** DELETE =/api/v1/ingredients/:ingredient-id=
+Delete a single ingredient by its id.
 #+begin_src sh
-curl "http://localhost:3000/api/categories"
+curl -X DELETE "http://localhost:3000/api/ingredients/1"
 #+end_src
-*** GET =/api/v1/categories/:category-id=
-Get a single category by its id.
+**** POST =/api/v1/ingredients=
+Create a single ingredient.
 #+begin_src sh
-curl "http://localhost:3000/api/categories/1"
+curl -X POST -d '{"name": "Test Ingredient", "info": "none", "type":"moderate","category":"fruit"}' "http://localhost:3000/api/ingredients"
 #+end_src
-*** GET =/api/v1/types=
+**** PUT =/api/v1/ingredients/1=
+Update a single ingredient by its id.
+#+begin_src sh
+curl -X POST -d '{"name": "Better Alfalfa", "info": "none", "type":"moderate","category":"fruit"}' "http://localhost:3000/api/ingredients/1"
+#+end_src
+The given =type= and =category= need to exist for this to be successful.
+*** Types
+**** GET =/api/v1/types=
 Get a list of all types.
 #+begin_src sh
 curl "http://localhost:3000/api/types"
 #+end_src
-*** GET =/api/v1/types/:type-id=
+**** GET =/api/v1/types/:type-id=
 Get a single category by its id.
 #+begin_src sh
 curl "http://localhost:3000/api/types/1"
 #+end_src
+**** POST =/api/v1/types=
+Create a single type.
+#+begin_src sh
+curl -X POST -d '{"name": "Test Type"}' "http://localhost:3000/api/types"
+#+end_src
+**** PUT =/api/v1/types/1=
+Update a single type by its id.
+#+begin_src sh
+curl -X POST -d '{"name": "unsafe"}' "http://localhost:3000/api/types/1"
+#+end_src
+**** DELETE =/api/v1/ingredients/:type-id=
+Delete a single type by its id.
+#+begin_src sh
+curl -X DELETE "http://localhost:3000/api/type/1"
+#+end_src
+This will not work if the type is being used by an ingredient.
+*** Categories
+**** GET =/api/v1/categories=
+Get a list of all categories.
+#+begin_src sh
+curl "http://localhost:3000/api/categories"
+#+end_src
+**** GET =/api/v1/categories/:category-id=
+Get a single category by its id.
+#+begin_src sh
+curl "http://localhost:3000/api/categories/1"
+#+end_src
+**** POST =/api/v1/categories=
+Create a single category.
+#+begin_src sh
+curl -X POST -d '{"name": "Test Category"}' "http://localhost:3000/api/categories"
+#+end_src
+**** PUT =/api/v1/categories/1=
+Update a single category by its id.
+#+begin_src sh
+curl -X POST -d '{"name": "veggies"}' "http://localhost:3000/api/types/1"
+#+end_src
+**** DELETE =/api/v1/categories/:category-id=
+Delete a single category by its id.
+#+begin_src sh
+curl -X DELETE "http://localhost:3000/api/categories/1"
+#+end_src
+This will not work if the category is being used by an ingredient.
