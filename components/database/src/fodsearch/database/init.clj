@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS ingredient (
     (jdbc/execute! db/conn [ingredient-table])))
 
 (defn- read-ingredients-csv
-  "All ingredient data is in `resources/ingredients.csv`.
+  "All ingredient data is in `resources/database/ingredients.csv`.
   This reads the csv and puts it into a map so it can be
   easily inserted into the DB with HoneySQL."
   []
@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS ingredient (
                        (map keyword)
                        repeat)
 	              (rest csv-data)))]
-    (with-open [reader (io/reader (io/resource "ingredients.csv"))]
+    (with-open [reader (io/reader (io/resource "database/ingredients.csv"))]
       (csv-data->maps (csv/read-csv reader)))))
 
 (defn- csv-column->sql
@@ -143,6 +143,7 @@ DROP TABLE IF EXISTS level
 (comment
   (create-tables!)
   (insert-levels-categories-data!)
+
   (init-db!)
   (reset-db!)
 
