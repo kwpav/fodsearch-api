@@ -1,5 +1,6 @@
 (ns fodsearch.level.interface
   (:require
+   [malli.core :as m]
    [fodsearch.level.repo :as repo]))
 
 (def Level
