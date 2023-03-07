@@ -51,7 +51,7 @@
   (let [ingredient {:name     name
                     :info     info
                     :category category
-                    :level     level}]
+                    :level    level}]
     {:status 201
      :body   {:ingredient (ingredient/create ingredient)}}))
 
