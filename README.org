@@ -4,13 +4,6 @@ The fodmap ingredient API.
 Information about low fodmap ingredients are scattered about the web, in plain text, images, web apps, etc. This API is an effort to put all low fodmap ingredients into a single place to make them easier to find.
 
 This is a work in progress!
-** Starting
-To start the server from the CLI run:
-#+begin_src sh
-clj -M:start
-#+end_src
-
-This starts a server at =localhost:3000=
 ** Endpoints
 *** Health
 **** GET =/api/v1/health=
@@ -42,41 +35,41 @@ curl -X DELETE "http://localhost:3000/api/ingredients/1"
 **** POST =/api/v1/ingredients=
 Create a single ingredient.
 #+begin_src sh
-curl -X POST -d '{"name": "Test Ingredient", "info": "none", "type":"moderate","category":"fruit"}' "http://localhost:3000/api/ingredients"
+curl -X POST -d '{"name": "Test Ingredient", "info": "none", "level":"moderate","category":"fruit"}' "http://localhost:3000/api/ingredients"
 #+end_src
 **** PUT =/api/v1/ingredients/1=
 Update a single ingredient by its id.
 #+begin_src sh
-curl -X POST -d '{"name": "Better Alfalfa", "info": "none", "type":"moderate","category":"fruit"}' "http://localhost:3000/api/ingredients/1"
+curl -X POST -d '{"name": "Better Alfalfa", "info": "none", "level":"moderate","category":"fruit"}' "http://localhost:3000/api/ingredients/1"
 #+end_src
-The given =type= and =category= need to exist for this to be successful.
-*** Types
-**** GET =/api/v1/types=
-Get a list of all types.
+The given =level= and =category= need to exist for this to be successful.
+*** Levels
+**** GET =/api/v1/levels=
+Get a list of all levels.
 #+begin_src sh
-curl "http://localhost:3000/api/types"
+curl "http://localhost:3000/api/levels"
 #+end_src
-**** GET =/api/v1/types/:type-id=
+**** GET =/api/v1/levels/:level-id=
 Get a single category by its id.
 #+begin_src sh
-curl "http://localhost:3000/api/types/1"
+curl "http://localhost:3000/api/levels/1"
 #+end_src
-**** POST =/api/v1/types=
-Create a single type.
+**** POST =/api/v1/levels=
+Create a single level.
 #+begin_src sh
-curl -X POST -d '{"name": "Test Type"}' "http://localhost:3000/api/types"
+curl -X POST -d '{"name": "Test Level"}' "http://localhost:3000/api/levels"
 #+end_src
-**** PUT =/api/v1/types/1=
-Update a single type by its id.
+**** PUT =/api/v1/levels/1=
+Update a single level by its id.
 #+begin_src sh
-curl -X POST -d '{"name": "unsafe"}' "http://localhost:3000/api/types/1"
+curl -X POST -d '{"name": "unsafe"}' "http://localhost:3000/api/levels/1"
 #+end_src
-**** DELETE =/api/v1/ingredients/:type-id=
-Delete a single type by its id.
+**** DELETE =/api/v1/ingredients/:level-id=
+Delete a single level by its id.
 #+begin_src sh
-curl -X DELETE "http://localhost:3000/api/type/1"
+curl -X DELETE "http://localhost:3000/api/level/1"
 #+end_src
-This will not work if the type is being used by an ingredient.
+This will not work if the level is being used by an ingredient.
 *** Categories
 **** GET =/api/v1/categories=
 Get a list of all categories.
@@ -96,7 +89,7 @@ curl -X POST -d '{"name": "Test Category"}' "http://localhost:3000/api/categorie
 **** PUT =/api/v1/categories/1=
 Update a single category by its id.
 #+begin_src sh
-curl -X POST -d '{"name": "veggies"}' "http://localhost:3000/api/types/1"
+curl -X POST -d '{"name": "veggies"}' "http://localhost:3000/api/levels/1"
 #+end_src
 **** DELETE =/api/v1/categories/:category-id=
 Delete a single category by its id.
