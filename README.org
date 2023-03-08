@@ -3,6 +3,8 @@ The fodmap ingredient API.
 ** About
 Information about low fodmap ingredients are scattered about the web, in plain text, images, web apps, etc. This API is an effort to put all low fodmap ingredients into a single place to make them easier to find.
 
+This is a Clojure project using [[https://polylith.gitbook.io/polylith/][Polylith]].
+
 This is a work in progress!
 ** Endpoints
 *** Health

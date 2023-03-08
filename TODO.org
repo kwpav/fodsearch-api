@@ -27,8 +27,10 @@ currently in =dev/user.clj= - not sure if this is the right place?
 ** TODO Dockerize
 *** TODO Initialize DB with data on startup
 *** TODO Start API?
-** TODO Deploy somewhere
 ** TODO pagination
+** TODO Auth
+** TODO Deploy somewhere
+Auth needs to be handled before this (if C(R)UD stuff is deployed)
 ** TODO Move router into its own ns?
 ** TODO Look into integrant / component / mount / donut.system
 ** TODO Logging

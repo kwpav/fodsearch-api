@@ -1,4 +1,6 @@
-(ns user)
+(ns dev.server
+  (:require
+   [fodsearch.rest-api.core :as api]))
 
 (def ^:private ratom atom)
 
@@ -12,4 +14,7 @@
 (comment
   @log
   (reset! log [])
-  ,)
+
+  (api/start-server)
+  (api/stop-server)
+  )
