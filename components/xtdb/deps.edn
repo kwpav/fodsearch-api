@@ -1,0 +1,18 @@
+{:paths         ["src" "resources"]
+ #_#_:mvn/repos {"ossrh-snapshots" {:url "https://s01.oss.sonatype.org/content/repositories/snapshots"}}
+ :deps          {;; xtdb2
+                 ;;com.xtdb.labs/xtdb-api           {:mvn/version "2.0.0-SNAPSHOT"}
+                 ;;com.xtdb.labs/xtdb-core          {:mvn/version "2.0.0-SNAPSHOT"}
+                 ;;com.xtdb.labs/xtdb-http-server   {:mvn/version "2.0.0-SNAPSHOT"}
+                 ;;com.xtdb.labs/xtdb-pgwire-server {:mvn/version "2.0.0-SNAPSHOT"}
+                 ;; xtdb1
+                 com.xtdb/xtdb-core {:mvn/version "1.23.2"}
+                 ;;techascent/tech.ml.dataset   {:mvn/version "7.000-beta-38"}
+                 scicloj/scicloj.ml {:mvn/version "0.2.0"}
+                 metosin/malli      {:mvn/version "0.11.0"}
+                 meander/epsilon    {:mvn/version "0.0.650"}}
+ :aliases       {:test    {:extra-paths ["test"]
+                           :extra-deps  {}}
+                 ;; needed on JDK16+
+                 #_#_:dev {:jvm-opts ["--add-opens=java.base/java.nio=ALL-UNNAMED"
+                                      "-Dio.netty.tryReflectionSetAccessible=true"]}}}

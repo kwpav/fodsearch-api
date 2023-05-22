@@ -1,0 +1,130 @@
+name,info,category,level
+Alfalfa,,vegetable,safe
+Arugula,,vegetable,safe
+Beansprouts,,vegetable,safe
+Carrots,,vegetable,safe
+Cucumber,,vegetable,safe
+Lettuces,,vegetable,safe
+Olives,green or black,vegetable,safe
+Parsnip,,vegetable,safe
+Potato,white,vegetable,safe
+Radish,,vegetable,safe
+Rhubarb,,vegetable,safe
+Seaweed/nori,,vegetable,safe
+Scallions,green tops only,vegetable,safe
+Spirulina powder,,vegetable,safe
+Eggplant,,vegetable,moderate
+Beetroot,pickled or canned,vegetable,moderate
+Bell Peppers,red,vegetable,moderate
+Brocolli,,vegetable,moderate
+Cabbage,,vegetable,moderate
+Butternut Squash,,vegetable,moderate
+Corn,,vegetable,moderate
+Courgette/Zuchinni,,vegetable,moderate
+Fennel,bulb or leaves,vegetable,moderate
+Green Beans,,vegetable,moderate
+Jicama,,vegetable,moderate
+Okra,,vegetable,moderate
+Pumpkin,canned,vegetable,moderate
+Spaghetti Squash,,vegetable,moderate
+Spinach,,vegetable,moderate
+Sweet Potato,,vegetable,moderate
+Tomato,,vegetable,moderate
+Turnip,,vegetable,moderate
+Yam,,vegetable,moderate
+Dragon Fruit,,fruit,safe
+Durian,,fruit,safe
+Guava,,fruit,safe
+Mandarin,,fruit,safe
+Orange,,fruit,safe
+Papaya,,fruit,safe
+Prickly Pear,,fruit,safe
+StarFruit,,fruit,safe
+Banana,firm/green,fruit,moderate
+Blueberry,,fruit,moderate
+Gratefruit,,fruit,moderate
+Cantaloupe,,fruit,moderate
+Cranberry,fresh,fruit,moderate
+Coconut,dessicated,fruit,moderate
+Honeydew Melon,,fruit,moderate
+Kiwi,,fruit,moderate
+Lemon,,fruit,moderate
+Lime,,fruit,moderate
+Passion Fruit,,fruit,moderate
+Pineapple,,fruit,moderate
+Raspberry,,fruit,moderate
+Strawberry,,fruit,moderate
+Arrowroot,,cereal/grain/nut/seed/flour,safe
+Buckwheat Flour,groats,cereal/grain/nut/seed/flour,safe
+Corn Flakes,,cereal/grain/nut/seed/flour,safe
+Corn/Maize Flour,,cereal/grain/nut/seed/flour,safe
+Corn Tortilla,,cereal/grain/nut/seed/flour,safe
+Macadamia Nut,,cereal/grain/nut/seed/flour,safe
+Polenta,,cereal/grain/nut/seed/flour,safe
+Quinoa,all types,cereal/grain/nut/seed/flour,safe
+Peanut,,cereal/grain/nut/seed/flour,safe
+Pine Nut,,cereal/grain/nut/seed/flour,safe
+Poppy Seed,,cereal/grain/nut/seed/flour,safe
+Pumpkin Seed,,cereal/grain/nut/seed/flour,safe
+Rice,all types,cereal/grain/nut/seed/flour,safe
+Sunflower Seed,,cereal/grain/nut/seed/flour,safe
+Tapioca Flour,,cereal/grain/nut/seed/flour,safe
+Teff,,cereal/grain/nut/seed/flour,safe
+Almond,,cereal/grain/nut/seed/flour,moderate
+Almond Flour,,cereal/grain/nut/seed/flour,moderate
+Brazil Nut,,cereal/grain/nut/seed/flour,moderate
+Bread,from approved gluten-free flours,cereal/grain/nut/seed/flour,moderate
+Sourdough Bread,no yeast,cereal/grain/nut/seed/flour,moderate
+Chia Seed,,cereal/grain/nut/seed/flour,moderate
+Flaxseed/Linseed,,cereal/grain/nut/seed/flour,moderate
+Oats,rolled,cereal/grain/nut/seed/flour,moderate
+Pasta/Noodles,from approved gluten-free flours,cereal/grain/nut/seed/flour,moderate
+Pecans,,cereal/grain/nut/seed/flour,moderate
+Rice Krispies,rice puffs,cereal/grain/nut/seed/flour,moderate
+Walnuts,,cereal/grain/nut/seed/flour,moderate
+Beef,,meat/eggs/legumes/soy protein,safe
+Chicken,,meat/eggs/legumes/soy protein,safe
+Cold Cuts / Deli,without high FODMAP ingredients added,meat/eggs/legumes/soy protein,safe
+Eggs,,meat/eggs/legumes/soy protein,safe
+Fish,,meat/eggs/legumes/soy protein,safe
+Lamb,,meat/eggs/legumes/soy protein,safe
+Pork,,meat/eggs/legumes/soy protein,safe
+Turkey,,meat/eggs/legumes/soy protein,safe
+Chickpeas,canned and rinsed,meat/eggs/legumes/soy protein,moderate
+Edamame beans,,meat/eggs/legumes/soy protein,moderate
+Lentils,canned and rinsed,meat/eggs/legumes/soy protein,moderate
+Lima and Mung Beans,,meat/eggs/legumes/soy protein,moderate
+Qorn,,meat/eggs/legumes/soy protein,moderate
+Seitan,,meat/eggs/legumes/soy protein,moderate
+Tempeh,,meat/eggs/legumes/soy protein,moderate
+Tofu,firm,meat/eggs/legumes/soy protein,moderate
+Almond Milk,,dairy and alternatives,safe
+Cheese,firm/hard,dairy and alternatives,safe
+Yogurt,plain lactose-free,dairy and alternatives,safe
+Rice Milk,,dairy and alternatives,safe
+Cows Milk,plain lactose-free,dairy and alternatives,moderate
+Hemp Milk,,dairy and alternatives,moderate
+Oat Milk,,dairy and alternatives,moderate
+Coconut Milk,,dairy and alternatives,moderate
+Butter,,sweeteners/sauces/condiments,safe
+BBQ Sauce,made without onion/garlic powder and HFCS,sweeteners/sauces/condiments,safe
+Ketchup/Tomato Sauce,made without onion/garlic powder and HFCS,sweeteners/sauces/condiments,safe
+Maple Syrup,,sweeteners/sauces/condiments,safe
+Margarine,,sweeteners/sauces/condiments,safe
+Mayonnaise,,sweeteners/sauces/condiments,safe
+Shrimp Paste,,sweeteners/sauces/condiments,safe
+Vanilla Extract,,sweeteners/sauces/condiments,safe
+Vegemite/Marmite,,sweeteners/sauces/condiments,safe
+Vinegar,apple cider/malt/red wine,sweeteners/sauces/condiments,safe
+Balsamic Vinegar,,sweeteners/sauces/condiments,moderate
+Cocao Powder,,sweeteners/sauces/condiments,moderate
+Miso,,sweeteners/sauces/condiments,moderate
+Soy Sauce,,sweeteners/sauces/condiments,moderate
+Fish Sauce,,sweeteners/sauces/condiments,moderate
+Oyster Sauce,,sweeteners/sauces/condiments,moderate
+Sweet and Sour Sauce,,sweeteners/sauces/condiments,moderate
+Equal,,sweeteners/sauces/condiments,moderate
+Stevia,,sweeteners/sauces/condiments,moderate
+Monk Fruit,,sweeteners/sauces/condiments,moderate
+Splenda,,sweeteners/sauces/condiments,moderate
+Worcestershire Sauce,,sweeteners/sauces/condiments,moderate

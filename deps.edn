@@ -1,19 +1,25 @@
-{:aliases {:dev {:extra-paths ["development/src"]
-                 :extra-deps  {org.clojure/clojure {:mvn/version "1.11.1"}
-                               poly/category       {:local/root "components/category"}
-                               poly/database       {:local/root "components/database"}
-                               poly/ingredient     {:local/root "components/ingredient"}
-                               poly/level          {:local/root "components/level"}
-                               poly/rest-api       {:local/root "bases/rest-api"}}}
+{:mvn/repos {"ossrh-snapshots" {:url "https://s01.oss.sonatype.org/content/repositories/snapshots"}}
+ :aliases   {:dev {:extra-paths ["development/src"]
+                   :extra-deps  {org.clojure/clojure {:mvn/version "1.11.1"}
+                                 poly/category       {:local/root "components/category"}
+                                 poly/database       {:local/root "components/database"}
+                                 poly/ingredient     {:local/root "components/ingredient"}
+                                 poly/level          {:local/root "components/level"}
+                                 poly/xtdb           {:local/root "components/xtdb"}
+                                 poly/rest-api       {:local/root "bases/rest-api"}}
+                   ;; needed for xtdb on JDK16
+                   :jvm-opts    ["--add-opens=java.base/java.nio=ALL-UNNAMED"
+                                 "-Dio.netty.tryReflectionSetAccessible=true"]}
 
-           :test {:extra-paths ["components/category/test"
-                                "components/database/test"
-                                "components/ingredient/test"
-                                "components/level/test"
-                                "bases/rest-api/test"]}
+             :test {:extra-paths ["components/category/test"
+                                  "components/database/test"
+                                  "components/ingredient/test"
+                                  "components/level/test"
+                                  "components/xtdb/test"
+                                  "bases/rest-api/test"]}
 
-           :poly {:main-opts  ["-m" "polylith.clj.core.poly-cli.core"]
-                  :extra-deps {polyfy/polylith
-                               {:git/url   "https://github.com/polyfy/polylith"
-                                :sha       "e51182d5e699f7e7ce141f1b1da25b50599d8886"
-                                :deps/root "projects/poly"}}}}}
+             :poly {:main-opts  ["-m" "polylith.clj.core.poly-cli.core"]
+                    :extra-deps {polyfy/polylith
+                                 {:git/url   "https://github.com/polyfy/polylith"
+                                  :sha       "e51182d5e699f7e7ce141f1b1da25b50599d8886"
+                                  :deps/root "projects/poly"}}}}}
