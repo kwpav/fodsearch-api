@@ -52,14 +52,8 @@
    [:xt/id uuid?]
    [:ingredient/name string?]
    [:ingredient/info {:optional true} string?]
-   [:id/category uuid?
-    #_[:map
-       [:xt/id uuid?]
-       [:name string?]]]
-   [:id/level uuid?
-    #_[:map
-       [:xt/id uuid?]
-       [:name [:enum "safe" "moderate"]]]]])
+   [:id/category uuid?]
+   [:id/level uuid?]])
 
 (def Category
   [:map
