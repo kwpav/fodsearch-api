@@ -2,12 +2,12 @@
   (:require
    [clojure.data.csv :as csv]
    [clojure.java.io :as io]
+   [clojure.string :as str]
    [malli.core :as m]
    [malli.provider :as mp]
    [malli.transform :as mt]
    [meander.match.epsilon :as mme]
-   [xtdb.api :as xt]
-   [fodsearch.ingredient.interface :as ingredient]))
+   [xtdb.api :as xt]))
 
 (defn- read-ingredients-csv
   "All ingredient data is in `resources/database/ingredients.csv`.
@@ -131,7 +131,8 @@
                                                  first
                                                  :xt/id))
                                      (dissoc :ingredient/level)
-                                     (dissoc :ingredient/category))))
+                                     (dissoc :ingredient/category)
+                                     (cond-> (str/blank? (:ingredient/info i)) (dissoc :ingredient/info)))))
                          (mapv validate-ingredient-output))]
     {:levels      levels
      :categories  categories
@@ -156,47 +157,87 @@
   (put-all node ingredients)
 
   (xt/q (xt/db node)
-        '{:find [?id ?name]
+        '{:find  [?id ?name]
+          :keys  [id name]
           :where [[?id :level/name ?name]]})
 
   (xt/q (xt/db node)
-        '{:find [?id ?name]
+        '{:find  [?id ?name]
+          :keys  [id name]
           :where [[?id :category/name ?name]]})
 
   (xt/q (xt/db node)
-        '{:find [?name]
+        '{:find  [?name]
           :where [[?id :level/name "safe"]
                   [e :id/level ?id]
                   [e :ingredient/name ?name]]})
 
   (xt/q (xt/db node)
-        '{:find [?name ?info]
+        '{:find  [?name]
+          :in    [level-name]
+          :where [[?id :level/name level-name]
+                  [e :id/level ?id]
+                  [e :ingredient/name ?name]]}
+        "safe"
+        #_"moderate")
+
+    ;; get all ingredients - flat
+  (xt/q (xt/db node)
+        '{:find  [?id ?name ?info ?level ?category]
+          :where [[?id :ingredient/name ?name]
+                  [?id :ingredient/info ?info]
+                  [?id :id/level ?level-id]
+                  [?id :id/category ?category-id]
+                  [?level-id :level/name ?level]
+                  [?category-id :category/name ?category]]})
+
+  (mapv first
+        (xt/q
+         (xt/db node)
+         '{:find  [(pull ?ingredient [(:xt/id {:as :id})
+                                      (:ingredient/name {:as :name})
+                                      (:ingredient/info {:as :info})
+                                      {(:id/level {:as :level})
+                                       [(:xt/id {:as :id})
+                                        (:level/name {:as :name})]}
+                                      {(:id/category {:as :category})
+                                       [(:xt/id {:as :id})
+                                        (:category/name {:as :name})]}])]
+           :where [[?ingredient :ingredient/name ?name]]}))
+
+  ;; ?????
+  (xt/q (xt/db node)
+        '{:find  [?id ?name ?info ?category ?level]
+          :keys  [id name info category level]
           :where [[?level-id :level/name "moderate"]
                   [e :id/level ?level-id]
-                  [e :ingredient/name ?name]
-                  [e :ingredient/info ?info]]})
+                  [e :id/category ?category-id]
+                  [?id :ingredient/name ?name]
+                  [e :ingredient/info ?info]
+                  [?category-id :category/name ?category]
+                  [?level-id :level/name ?level]]})
 
   (xt/q (xt/db node)
-        '{:find [?name]
+        '{:find  [?name]
           :where [[id :level/name "safe"]
-                  [e :id/safe]
+                  [e :id/level]
                   [e :ingredient/name ?name]]})
 
   (def manifest
-    {:xt/id :manifest
-     :pilot-name "Johanna"
-     :id/rocket "SB002-sol"
+    {:xt/id       :manifest
+     :pilot-name  "Johanna"
+     :id/rocket   "SB002-sol"
      :id/employee "22910x2"
-     :badges "SETUP"
-     :cargo ["stereo" "gold fish" "slippers" "secret note"]})
+     :badges      "SETUP"
+     :cargo       ["stereo" "gold fish" "slippers" "secret note"]})
 
   (def manifest
-    {:xt/id :manifest
-     :pilot-name "Johanna"
-     :id/rocket "SB002-sol"
+    {:xt/id       :manifest
+     :pilot-name  "Johanna"
+     :id/rocket   "SB002-sol"
      :id/employee "22910x2"
-     :badges "SETUP"
-     :cargo ["stereo" "gold fish" "slippers" "secret note"]})
+     :badges      "SETUP"
+     :cargo       ["stereo" "gold fish" "slippers" "secret note"]})
 
   (xt/submit-tx node [[::xt/put manifest]])
 

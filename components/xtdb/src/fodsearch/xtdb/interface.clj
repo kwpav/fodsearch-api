@@ -1,12 +1,15 @@
 (ns fodsearch.xtdb.interface
   (:require [clojure.java.io :as io]))
 
-(def IngredientCsv
-  [:map
-   [:name string?]
-   [:info {:optional true} string?]
-   [:category string?]
-   [:level [:enum "safe" "moderate"]]])
+(defonce node (xt/start-node {}))
+
+(defn query [])
+
+(defn create [])
+
+(defn delete [])
+
+(defn update [])
 
 (comment
   (require '[malli.generator :as mg])
