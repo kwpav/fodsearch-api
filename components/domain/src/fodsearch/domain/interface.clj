@@ -1,1 +1,0 @@
-(ns fodsearch.domain.interface)

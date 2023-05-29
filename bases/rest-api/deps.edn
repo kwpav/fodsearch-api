@@ -1,6 +1,0 @@
-{:paths   ["src" "resources"]
- :deps    {metosin/reitit          {:mvn/version "0.5.18"}
-           ring/ring-jetty-adapter {:mvn/version "1.9.6"}
-           party.donut/system      {:mvn/version "0.0.203"}}
- :aliases {:test {:extra-paths ["test"]
-                  :extra-deps  {}}}}

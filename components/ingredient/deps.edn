@@ -1,5 +1,0 @@
-{:paths   ["src" "resources"]
- :deps    {metosin/malli      {:mvn/version "0.9.2"}
-           party.donut/system {:mvn/version "0.0.203"}}
- :aliases {:test {:extra-paths ["test"]
-                  :extra-deps  {}}}}
