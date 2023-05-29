@@ -7,14 +7,14 @@
   []
   (mapv first
         (db/query
-         '{:find  [(pull ?ingredient [(:xt/id {:as :id})
+         '{:find  [(pull ?ingredient [(:ingredient/id {:as :id})
                                       (:ingredient/name {:as :name})
                                       (:ingredient/info {:as :info})
                                       {(:id/level {:as :level})
-                                       [(:xt/id {:as :id})
+                                       [(:ingredient/id {:as :id})
                                         (:level/name {:as :name})]}
                                       {(:id/category {:as :category})
-                                       [(:xt/id {:as :id})
+                                       [(:ingredient/id {:as :id})
                                         (:category/name {:as :name})]}])]
            :where [[?ingredient :ingredient/name ?name]]})))
 

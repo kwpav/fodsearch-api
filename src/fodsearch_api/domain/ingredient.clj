@@ -31,7 +31,10 @@
 (defn find-one
   "Get a single ingredient by its value."
   [by value]
-  (repo/select by value))
+  (let [result (repo/select by value)]
+    (if (seq result)
+      result
+      nil)))
 (m/=> find-one
       [:=> [:cat keyword? int?] Ingredient])
 
