@@ -1,5 +1,5 @@
 (ns fodsearch-api.db.init
- (:require
+  (:require
    [clojure.data.csv :as csv]
    [clojure.java.io :as io]
    [clojure.string :as str]
@@ -7,7 +7,8 @@
    [malli.provider :as mp]
    [malli.transform :as mt]
    [meander.match.epsilon :as mme]
-   [xtdb.api :as xt]))
+   [xtdb.api :as xt]
+   [fodsearch-api.db.db :as db]))
 
 (defn- read-ingredients-csv
   "All ingredient data is in `resources/database/ingredients.csv`.
@@ -92,8 +93,10 @@
        (mapv :level)
        (into #{})
        (mapv (fn [l]
-               {:xt/id      (random-uuid)
-                :level/name l}))))
+               (let [id (random-uuid)]
+                 {:xt/id      id
+                  :level/id   id
+                  :level/name l})))))
 
 (defn csv->categories
   [csv]
@@ -102,8 +105,10 @@
        (into #{})
        (into [])
        (mapv (fn [c]
-               {:xt/id      (random-uuid)
-                :category/name c}))))
+               (let [id (random-uuid)]
+                 {:xt/id         id
+                  :category/id   id
+                  :category/name c})))))
 
 (defn csv->ingredients
   [csv]
@@ -114,6 +119,7 @@
                          (mapv transform-ingredient)
                          (mapv (fn [i]
                                  (-> i
+                                     (assoc :ingredient/id  (:xt/id i))
                                      (assoc :id/level
                                             (->> levels
                                                  (filter #(= (:level/name %) (:ingredient/level i)))
@@ -132,7 +138,7 @@
      :categories  categories
      :ingredients ingredients}))
 
-(defonce node (xt/start-node {}))
+#_(defonce node (xt/start-node {}))
 
 (defn put-all
   [db data]
@@ -148,25 +154,26 @@
   (def ingredients
     (csv->ingredients (read-ingredients-csv)))
 
-  (put-all node ingredients)
+  (put-all db/node ingredients)
+  (xt/sync db/node)
 
-  (xt/q (xt/db node)
+  (xt/q (xt/db db/node)
         '{:find  [?id ?name]
           :keys  [id name]
           :where [[?id :level/name ?name]]})
 
-  (xt/q (xt/db node)
+  (xt/q (xt/db db/node)
         '{:find  [?id ?name]
           :keys  [id name]
           :where [[?id :category/name ?name]]})
 
-  (xt/q (xt/db node)
+  (xt/q (xt/db db/node)
         '{:find  [?name]
           :where [[?id :level/name "safe"]
                   [e :id/level ?id]
                   [e :ingredient/name ?name]]})
 
-  (xt/q (xt/db node)
+  (xt/q (xt/db db/node)
         '{:find  [?name]
           :in    [level-name]
           :where [[?id :level/name level-name]

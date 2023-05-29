@@ -5,37 +5,25 @@
 (defn select-all
   "Select all levels."
   []
-  (let [query {:select [:id :name]
-               :from   [:level]}]
-    (db/exec! query)))
+  (db/query '{:find [?id ?name]
+              :keys [id name]
+              :where [[?id :level/name ?name]]}))
 
+;; TODO
+;; see repo/category
 (defn select
   "Select level(s) where `by = value`."
   [by value]
-  (let [query {:select [:id :name]
-               :from [:level]
-               :where [:= by value]}]
-    (db/exec! query)))
-
-(defn insert
-  "Insert a new level into the `level` table."
-  [{:keys [name] :as _level}]
-  (let [query {:insert-into [:level]
-               :columns     [:name]
-               :values      [[name]]}]
-    (db/exec! query)))
-
-(defn update-by-id
-  "Update a level by its id."
-  [{:keys [id] :as level}]
-  (let [query {:update [:level]
-               :set    level
-               :where  [:= :id id]}]
-    (db/exec! query)))
-
-(defn delete-by-id
-  "Delete a single level by its id"
-  [id]
-  (let [query {:delete-from [:level]
-               :where       [:= :id id]}]
-    (db/exec! query)))
+  (cond
+    (= :id by)
+    (db/query '{:find  [?name]
+                :keys  [name]
+                :in    [lvl-id]
+                :where [[lvl-id :level/name ?name]]}
+              value)
+    (= :name by)
+    (db/query '{:find  [?id]
+                :keys  [id]
+                :in    [lvl-name]
+                :where [[?id :level/name cat-name]]}
+              value)))

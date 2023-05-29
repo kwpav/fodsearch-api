@@ -31,7 +31,7 @@
      ["/:ingredient-id"
       {:get
        {:name       ::get-ingredient
-        :parameters {:path [:map [:ingredient-id int?]]}
+        :parameters {:path [:map [:ingredient-id uuid?]]}
         :responses  {200 {:body [:map [:ingredient ingredient/Ingredient]]}
                      404 {:body nil?}}
         :handler    handler/get-ingredient-handler}}]]
@@ -45,7 +45,7 @@
      ["/:level-id"
       {:get
        {:name       ::get-level
-        :parameters {:path [:map [:level-id int?]]}
+        :parameters {:path [:map [:level-id uuid?]]}
         :responses  {200 {:body [:map [:level level/Level]]}
                      404 {:body nil?}}
         :handler    handler/get-level-handler}}]]
@@ -60,7 +60,7 @@
      ["/:category-id"
       {:get
        {:name       ::get-category
-        :parameters {:path [:map [:category-id int?]]}
+        :parameters {:path [:map [:category-id uuid?]]}
         :responses  {200 {:body [:map [:category category/Category]]}
                      404 {:body nil?}}
         :handler    handler/get-category-handler}}]]]])
@@ -78,5 +78,3 @@
                          rrc/coerce-request-middleware
                          mmw/format-response-middleware
                          rrc/coerce-response-middleware]}})))
-
-
