@@ -1,11 +1,13 @@
-* TODO Endpoints [5/10]
+* TODO Endpoints [5/11]
 ** CURRENT Determine all endpoints
 Below list is a work in progress, finish this task when all endpoints are finalized.
 ** DONE =/api/ingredients/:ingredient-id=
-** DONE =/api/categories/:category-id/=
-** DONE =/api/categories/=
-** DONE =/api/types/:type-id/=
-** DONE =/api/types/=
+** DONE =/api/categories/:category-id=
+** DONE =/api/categories=
+** DONE =/api/types/:type-id=
+** DONE =/api/types=
+** TODO =/api/types/:type-id/ingredients=
+** TODO =/api/categories/:category-id/ingredients=
 ** TODO =/api/ingredients?q==
 Search endpoint
 ** TODO =/api/ingredients?name==
@@ -17,12 +19,14 @@ Search endpoint
 csv?
 ** DONE Load data into DB
 ** DONE Hook up db and endpoints
-* TODO Other [1/11]
-** CURRENT Move to Polylith
+* TODO Other [4/12]
+** CANCELLED Move to Polylith
+- State "CANCELLED"  from "CURRENT"    [2023-05-29 Mon 00:58] \\
+  not worth it
 on branch =polylith=
-** CURRENT tap functionality
+** DONE tap functionality
 currently in =dev/user.clj= - not sure if this is the right place?
-** TODO Check out xtdb
+** CURRENT Check out xtdb
 ** TODO Tests
 ** TODO Dockerize
 *** TODO Initialize DB with data on startup
@@ -31,13 +35,18 @@ currently in =dev/user.clj= - not sure if this is the right place?
 ** TODO Auth
 ** TODO Deploy somewhere
 Auth needs to be handled before this (if C(R)UD stuff is deployed)
-** TODO Move router into its own ns?
-** TODO Look into integrant / component / mount / donut.system
+** DONE Move router into its own ns?
+** CURRENT Look into integrant / component / mount / donut.system
+probably using donut.system
 ** TODO Logging
 ** DONE Add domain layer?
-* Tech Debt [1/1]
+* Tech Debt [1/4]
 ** DONE Clean up removing ns'ed keywords in handlers
 next jdbc returns namespaced keywords that need to be  removed for the response
 Figure out a good way to handle this
 
 Added a =domain= layer with fns to remove these
+** TODO Repetitive repo code
+** TODO Clean up db init code
+Goal is to make all transforms using meander
+** TODO 

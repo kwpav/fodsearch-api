@@ -1,34 +1,9 @@
 (ns fodsearch-api.system
   (:require
-   [clojure.tools.logging :as logging]
    [donut.system :as ds]
-   [fodsearch-api.api :as api]
+   [fodsearch-api.service :as service]
    [ring.adapter.jetty :as jetty]
    [xtdb.api :as xt]))
-
-#_(def server
-    #::ds{:start (fn [{:keys [::ds/config]}]
-                   (let [{:keys [handler options]} config]
-                     (jetty/run-jetty handler options)))
-          :stop (fn [{:keys [::ds/instance]}]
-                  (.stop instance))
-          :config {:handler (ds/local-ref [:handler])
-                   :options {:port (ds/local-ref [:port])
-                             :join? false}
-                   #_#_:node (ds/ref [:rest-api :xt-node])}})
-
-#_(def service
-  ;; TODO api/app goes here
-  ;; inject node here?
-    #::ds{:start (fn [])
-          :stop (fn [])})
-
-#_(def xt-node
-  ;; signal handlers for xt-node
-    #::ds{:start (fn []
-                   (xt/start-node {}))
-          :stop  (fn [{:keys [::ds/instance]}]
-                   (.close instance))})
 
 (def base-system
   {::ds/defs
@@ -36,10 +11,9 @@
     {:server  ;; component name
      #::ds{:start  (fn start-server
                      [{{:keys [service options]} ::ds/config}]
-                    (jetty/run-jetty #'api/app options))
+                    (jetty/run-jetty service options))
            :stop   (fn stop-server
                      [{::ds/keys [instance] :as s}]
-                     (tap> s)
                      (.stop instance))
            :config {:service (ds/ref [:rest-api :service])
                     :options     {:port  3000
@@ -48,7 +22,7 @@
      :service
      #::ds{:start (fn start-service
                     [_]
-                    #'api/app)}
+                    #'service/app)}
 
      :xt-node
      #::ds{:start (fn start-node
@@ -61,7 +35,7 @@
 (comment
 
   (def running-system (ds/start base-system))
-  (ds/stop base-system)
+  (ds/stop running-system)
   ;; or...
   (def running-system (ds/signal base-system ::ds/start))
   (ds/signal running-system ::ds/stop)

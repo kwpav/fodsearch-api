@@ -1,11 +1,10 @@
 (ns fodsearch-api.main
   (:require
-   [donut.system :as ds]
-   [fodsearch-api.api :as api]
+   [fodsearch-api.service :as service]
    [ring.adapter.jetty :as jetty])
   (:gen-class))
 
-(defonce server (jetty/run-jetty #'api/app {:port 3000 :join? false}))
+(defonce server (jetty/run-jetty #'service/app {:port 3000 :join? false}))
 
 (defn start-server
   []
