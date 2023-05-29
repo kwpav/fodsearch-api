@@ -1,6 +1,6 @@
 (ns fodsearch-api.repo.level
   (:require
-   [fodsearch-api.db.db :as db]))
+   [fodsearch-api.database.interface :as db]))
 
 (defn select-all
   "Select all levels."

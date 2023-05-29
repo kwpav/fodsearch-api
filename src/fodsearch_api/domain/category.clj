@@ -1,8 +1,7 @@
 (ns fodsearch-api.domain.category
   (:require
    [malli.core :as m]
-   [fodsearch-api.repo.category :as repo]
-   [fodsearch-api.db.db :as db]))
+   [fodsearch-api.repo.category :as repo]))
 
 (def Category
   [:or

@@ -1,6 +1,6 @@
 (ns fodsearch-api.repo.ingredient
   (:require
-   [fodsearch-api.db.db :as db]))
+   [fodsearch-api.database.interface :as db]))
 
 (defn select-all
   "Select all ingredients."
@@ -11,10 +11,10 @@
                                       (:ingredient/name {:as :name})
                                       (:ingredient/info {:as :info})
                                       {(:id/level {:as :level})
-                                       [(:ingredient/id {:as :id})
+                                       [(:level/id {:as :id})
                                         (:level/name {:as :name})]}
                                       {(:id/category {:as :category})
-                                       [(:ingredient/id {:as :id})
+                                       [(:category/id {:as :id})
                                         (:category/name {:as :name})]}])]
            :where [[?ingredient :ingredient/name ?name]]})))
 
@@ -39,6 +39,8 @@
      value))))
 
 ;; TODO implement this! using lucene?
+(defn search [q]
+  [])
 #_(defn search
     "Search for ingredients with the given query string.
   This is case-insensitive and will search for ingredients where

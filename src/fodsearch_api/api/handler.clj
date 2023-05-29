@@ -1,4 +1,4 @@
-(ns fodsearch-api.handler
+(ns fodsearch-api.api.handler
   (:require
    [fodsearch-api.domain.category :as category]
    [fodsearch-api.domain.ingredient :as ingredient]

@@ -1,15 +1,9 @@
-(ns fodsearch-api.service
+(ns fodsearch-api.api.routes
   (:require
+   [fodsearch-api.api.handler :as handler]
    [fodsearch-api.domain.category :as category]
    [fodsearch-api.domain.ingredient :as ingredient]
-   [fodsearch-api.domain.level :as level]
-   [fodsearch-api.handler :as handler]
-   [muuntaja.core :as mc]
-   [reitit.coercion.malli]
-   [reitit.ring :as ring]
-   [reitit.ring.coercion :as rrc]
-   [reitit.ring.middleware.muuntaja :as mmw]
-   [reitit.ring.middleware.parameters :as parameters]))
+   [fodsearch-api.domain.level :as level]))
 
 (def routes
   ["/api"
@@ -65,16 +59,3 @@
                      404 {:body nil?}}
         :handler    handler/get-category-handler}}]]]])
 
-(def app
-  (ring/ring-handler
-   (ring/router
-    routes
-    {:data {:coercion   reitit.coercion.malli/coercion
-            :muuntaja   mc/instance
-            :middleware [parameters/parameters-middleware
-                         mmw/format-middleware
-                         rrc/coerce-exceptions-middleware
-                         mmw/format-request-middleware
-                         rrc/coerce-request-middleware
-                         mmw/format-response-middleware
-                         rrc/coerce-response-middleware]}})))

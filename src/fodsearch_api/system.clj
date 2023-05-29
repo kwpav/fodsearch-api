@@ -1,7 +1,7 @@
 (ns fodsearch-api.system
   (:require
    [donut.system :as ds]
-   [fodsearch-api.service :as service]
+   [fodsearch-api.router :as router]
    [ring.adapter.jetty :as jetty]
    [xtdb.api :as xt]))
 
@@ -10,19 +10,19 @@
    {:rest-api ;; component group
     {:server  ;; component name
      #::ds{:start  (fn start-server
-                     [{{:keys [service options]} ::ds/config}]
-                    (jetty/run-jetty service options))
+                     [{{:keys [router options]} ::ds/config}]
+                    (jetty/run-jetty router options))
            :stop   (fn stop-server
                      [{::ds/keys [instance] :as s}]
                      (.stop instance))
-           :config {:service (ds/ref [:rest-api :service])
+           :config {:router (ds/ref [:rest-api :router])
                     :options     {:port  3000
                                   :join? false}}}
 
-     :service
-     #::ds{:start (fn start-service
+     :router
+     #::ds{:start (fn start-router
                     [_]
-                    #'service/app)}
+                    #'router/router)}
 
      :xt-node
      #::ds{:start (fn start-node
