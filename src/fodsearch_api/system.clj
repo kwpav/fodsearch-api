@@ -21,8 +21,9 @@
 
      :router
      #::ds{:start (fn start-router
-                    [_]
-                    #'router/router)}
+                    [{::ds/keys [config]}]
+                    (router/router config))
+           :config {:xt-node (ds/ref [:rest-api :xt-node])}}
 
      :xt-node
      #::ds{:start (fn start-node

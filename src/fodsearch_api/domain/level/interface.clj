@@ -1,7 +1,7 @@
-(ns fodsearch-api.domain.level
+(ns fodsearch-api.domain.level.interface
   (:require
    [malli.core :as m]
-   [fodsearch-api.repo.level :as repo]))
+   [fodsearch-api.domain.level.impl :as impl]))
 
 (def Level
   [:or
@@ -13,14 +13,14 @@
 (defn get-all
   "Get all of the levels."
   []
-  (into [] (repo/select-all)))
+  (into [] (impl/select-all)))
 (m/=> get-all
       [:=> :cat [:vector Level]])
 
 (defn find-one
   "Get a single level by its value."
   [by value]
-  (let  [result (repo/select by value)]
+  (let  [result (impl/select by value)]
     (if (seq result)
       (into {by value}
             (first result))

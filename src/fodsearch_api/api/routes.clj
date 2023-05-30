@@ -1,9 +1,9 @@
 (ns fodsearch-api.api.routes
   (:require
    [fodsearch-api.api.handler :as handler]
-   [fodsearch-api.domain.category :as category]
-   [fodsearch-api.domain.ingredient :as ingredient]
-   [fodsearch-api.domain.level :as level]))
+   [fodsearch-api.domain.category.interface :as category]
+   [fodsearch-api.domain.ingredient.interface :as ingredient]
+   [fodsearch-api.domain.level.interface :as level]))
 
 (def routes
   ["/api"

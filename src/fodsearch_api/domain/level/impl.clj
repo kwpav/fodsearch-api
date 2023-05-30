@@ -1,4 +1,4 @@
-(ns fodsearch-api.repo.level
+(ns fodsearch-api.domain.level.impl
   (:require
    [fodsearch-api.database.interface :as db]))
 

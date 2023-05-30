@@ -4,17 +4,17 @@
    [ring.adapter.jetty :as jetty])
   (:gen-class))
 
-(defonce server (jetty/run-jetty #'service/app {:port 3000 :join? false}))
+;; (defonce server (jetty/run-jetty #'service/app {:port 3000 :join? false}))
 
-(defn start-server
-  []
-  (.start server)
-  :start)
+;; (defn start-server
+;;   []
+;;   (.start server)
+;;   :start)
 
-(defn stop-server
-  []
-  (.stop server)
-  :stop)
+;; (defn stop-server
+;;   []
+;;   (.stop server)
+;;   :stop)
 
 #_(defn -main
     [& _args]
@@ -22,8 +22,8 @@
     (start-server))
 
 (comment
-  (start-server)
-  (stop-server)
+  ;; (start-server)
+  ;; (stop-server)
 
   ;; NOTE!
   ;; Need to comment out `mmw/format-middleware` for requests with `body-params` to work

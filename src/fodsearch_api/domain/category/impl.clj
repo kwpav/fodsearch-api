@@ -1,4 +1,4 @@
-(ns fodsearch-api.repo.category
+(ns fodsearch-api.domain.category.impl
   (:require
    [fodsearch-api.database.interface :as db]))
 

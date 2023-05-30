@@ -8,7 +8,8 @@
    [reitit.ring.middleware.muuntaja :as mmw]
    [reitit.ring.middleware.parameters :as parameters]))
 
-(def router
+(defn router
+  [app-config]
   (ring/ring-handler
    (ring/router
     routes/routes

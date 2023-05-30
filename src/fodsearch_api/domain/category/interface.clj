@@ -1,7 +1,7 @@
-(ns fodsearch-api.domain.category
+(ns fodsearch-api.domain.category.interface
   (:require
    [malli.core :as m]
-   [fodsearch-api.repo.category :as repo]))
+   [fodsearch-api.domain.category.impl :as impl]))
 
 (def Category
   [:or
@@ -13,14 +13,14 @@
 (defn get-all
   "Get all the categories."
   []
-  (into [] (repo/select-all)))
+  (into [] (impl/select-all)))
 (m/=> get-all
       [:=> :cat [:vector Category]])
 
 (defn find-one
   "Get a single category by its value."
   [by value]
-  (let [result (repo/select by value)]
+  (let [result (impl/select by value)]
     (if (seq result)
       (into {by value}
             (first result))

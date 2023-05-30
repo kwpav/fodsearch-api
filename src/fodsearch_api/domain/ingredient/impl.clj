@@ -1,4 +1,4 @@
-(ns fodsearch-api.repo.ingredient
+(ns fodsearch-api.domain.ingredient.impl
   (:require
    [fodsearch-api.database.interface :as db]))
 

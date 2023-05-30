@@ -1,9 +1,9 @@
-(ns fodsearch-api.domain.ingredient
+(ns fodsearch-api.domain.ingredient.interface
   (:require
    [malli.core :as m]
-   [fodsearch-api.repo.ingredient :as repo]
-   [fodsearch-api.domain.level :as level]
-   [fodsearch-api.domain.category :as category]))
+   [fodsearch-api.domain.ingredient.impl :as impl]
+   [fodsearch-api.domain.level.interface :as level]
+   [fodsearch-api.domain.category.interface :as category]))
 
 (def Ingredient
   [:or
@@ -18,7 +18,7 @@
 (defn get-all
   "Get all ingredients."
   []
-  (repo/select-all))
+  (impl/select-all))
 (m/=> get-all
       [:=> :cat [:vector Ingredient]])
 
@@ -31,7 +31,7 @@
 (defn find-one
   "Get a single ingredient by its value."
   [by value]
-  (let [result (repo/select by value)]
+  (let [result (impl/select by value)]
     (if (seq result)
       result
       nil)))

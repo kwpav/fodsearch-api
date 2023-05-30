@@ -1,8 +1,8 @@
 (ns fodsearch-api.api.handler
   (:require
-   [fodsearch-api.domain.category :as category]
-   [fodsearch-api.domain.ingredient :as ingredient]
-   [fodsearch-api.domain.level :as level]))
+   [fodsearch-api.domain.category.interface :as category]
+   [fodsearch-api.domain.ingredient.interface :as ingredient]
+   [fodsearch-api.domain.level.interface :as level]))
 
 (defn get-ingredients-handler
   [{{{q :q} :query} :parameters :as _request}]
