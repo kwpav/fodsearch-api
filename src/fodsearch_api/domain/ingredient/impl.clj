@@ -2,11 +2,12 @@
   (:require
    [fodsearch-api.database.interface :as db]))
 
-(defn select-all
+(defn get-all
   "Select all ingredients."
-  []
+  [{:keys [node] :as _app-config}]
   (mapv first
         (db/query
+         node
          '{:find  [(pull ?ingredient [(:ingredient/id {:as :id})
                                       (:ingredient/name {:as :name})
                                       (:ingredient/info {:as :info})
@@ -18,13 +19,13 @@
                                         (:category/name {:as :name})]}])]
            :where [[?ingredient :ingredient/name ?name]]})))
 
-;; TODO allow other values besides ID - or separate functions?
-(defn select
-  "Select ingredient(s) where `by = value`."
-  [by value]
+(defn find-by-id
+  "Select ingredient by id."
+  [value {:keys [node] :as _app-config}]
   (first
    (first
     (db/query
+     node
      '{:find  [(pull ?ingredient [(:ingredient/id {:as :id})
                                   (:ingredient/name {:as :name})
                                   (:ingredient/info {:as :info})

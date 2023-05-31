@@ -1,7 +1,7 @@
 (ns fodsearch-api.domain.level.interface
   (:require
    [malli.core :as m]
-   [fodsearch-api.domain.level.impl :as impl]))
+   [fodsearch-api.domain.level.impl :as level]))
 
 (def Level
   [:or
@@ -12,24 +12,21 @@
 
 (defn get-all
   "Get all of the levels."
-  []
-  (into [] (impl/select-all)))
+  [app-config]
+  (into [] (level/get-all app-config)))
 (m/=> get-all
       [:=> :cat [:vector Level]])
 
-(defn find-one
+(defn find-by-id
   "Get a single level by its value."
-  [by value]
-  (let  [result (impl/select by value)]
+  [value app-config]
+  (let  [result (level/find-by-id value app-config)]
     (if (seq result)
-      (into {by value}
-            (first result))
+      (first result)
       nil)))
-(m/=> find-one
+(m/=> find-by-id
       [:=> [:cat keyword? int?] Level])
 
-
 (comment
-  (get-all)
-  (find-one :name "safe")
+  (get-all {})
   :comment)

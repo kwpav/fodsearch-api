@@ -1,7 +1,7 @@
 (ns fodsearch-api.domain.ingredient.interface
   (:require
    [malli.core :as m]
-   [fodsearch-api.domain.ingredient.impl :as impl]
+   [fodsearch-api.domain.ingredient.impl :as ingredient]
    [fodsearch-api.domain.level.interface :as level]
    [fodsearch-api.domain.category.interface :as category]))
 
@@ -17,28 +17,28 @@
 
 (defn get-all
   "Get all ingredients."
-  []
-  (impl/select-all))
+  [app-config]
+  (ingredient/get-all app-config))
 (m/=> get-all
       [:=> :cat [:vector Ingredient]])
 
 ;; TODO implement this!
 (defn search
   "Search for an ingredient that matches the given query string."
-  [query]
+  [query app-config]
   [])
 
-(defn find-one
-  "Get a single ingredient by its value."
-  [by value]
-  (let [result (impl/select by value)]
+(defn find-by-id
+  "Get a single ingredient by its id."
+  [value app-config]
+  (let [result (ingredient/find-by-id value app-config)]
     (if (seq result)
       result
       nil)))
-(m/=> find-one
+(m/=> find-by-id
       [:=> [:cat keyword? int?] Ingredient])
 
 (comment
-  (get-all)
-  (find-one :id #uuid "290bc5fa-4afd-4f5c-85d1-987dc9b103b5")
+  (get-all {})
+  (find-by-id #uuid "290bc5fa-4afd-4f5c-85d1-987dc9b103b5" {})
   :comment)

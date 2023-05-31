@@ -1,6 +1,7 @@
 (ns fodsearch-api.system
   (:require
    [donut.system :as ds]
+   [fodsearch-api.database.interface :as db]
    [fodsearch-api.router :as router]
    [ring.adapter.jetty :as jetty]
    [xtdb.api :as xt]))
@@ -11,27 +12,30 @@
     {:server  ;; component name
      #::ds{:start  (fn start-server
                      [{{:keys [router options]} ::ds/config}]
-                    (jetty/run-jetty router options))
+                     (jetty/run-jetty router options))
            :stop   (fn stop-server
                      [{::ds/keys [instance] :as s}]
                      (.stop instance))
-           :config {:router (ds/ref [:rest-api :router])
-                    :options     {:port  3000
-                                  :join? false}}}
+           :config {:router  (ds/ref [:rest-api :router])
+                    :options {:port  3000
+                              :join? false}}}
 
      :router
-     #::ds{:start (fn start-router
-                    [{::ds/keys [config]}]
-                    (router/router config))
-           :config {:xt-node (ds/ref [:rest-api :xt-node])}}
+     #::ds{:start  (fn start-router
+                     [{::ds/keys [config]}]
+                     (router/router config))
+           :config {:node (ds/ref [:rest-api :node])}}
 
-     :xt-node
-     #::ds{:start (fn start-node
-                    [_]
-                    (xt/start-node {}))
-           :stop  (fn stop-node
-                    [{:keys [::ds/instance]}]
-                    (.close instance))}}}})
+     :node
+     #::ds{:start      (fn start-node
+                         [_]
+                         (xt/start-node {}))
+           :post-start (fn post-start-node
+                         [{:keys [::ds/instance]}]
+                         (db/init-db instance))
+           :stop       (fn stop-node
+                         [{:keys [::ds/instance]}]
+                         (.close instance))}}}})
 
 (comment
 
@@ -41,6 +45,11 @@
   (def running-system (ds/signal base-system ::ds/start))
   (ds/signal running-system ::ds/stop)
 
+  (db/init-db (-> running-system
+                  :donut.system/instances
+                  :rest-api
+                  :node
+                  xt/status))
 
   ;; system ns example
   ;; Use aero for all configuration
@@ -65,7 +74,7 @@
 
        :handler
        #::ds{:start (fn [_]
-                    ;; handler goes here
+                      ;; handler goes here
                       )}}}})
 
   (defmethod ds/named-system :base

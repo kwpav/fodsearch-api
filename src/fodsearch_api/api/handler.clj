@@ -5,14 +5,21 @@
    [fodsearch-api.domain.level.interface :as level]))
 
 (defn get-ingredients-handler
-  [{{{q :q} :query} :parameters :as _request}]
-  (let [ingredients (if q (ingredient/search q) (ingredient/get-all))]
+  [{{{q :q} :query} :parameters
+    app-config      :app-config
+    :as             _request}]
+  (tap> {::get-ingredients-handler _request})
+  (let [ingredients (if q
+                      (ingredient/search q app-config)
+                      (ingredient/get-all app-config))]
     {:status 200
      :body   {:ingredients ingredients}}))
 
 (defn get-ingredient-handler
-  [{{{id :ingredient-id} :path} :parameters :as _request}]
-  (let [ingredient (ingredient/find-one :id id)]
+  [{{{id :ingredient-id} :path} :parameters
+    app-config                  :app-config
+    :as                         _request}]
+  (let [ingredient (ingredient/find-by-id id app-config)]
     (if ingredient
       {:status 200
        :body   {:ingredient ingredient}}
@@ -20,14 +27,16 @@
        :body   nil})))
 
 (defn get-levels-handler
-  [_request]
-  (let [levels (level/get-all)]
+  [{:keys [app-config] :as _request}]
+  (let [levels (level/get-all app-config)]
     {:status 200
      :body   {:levels levels}}))
 
 (defn get-level-handler
-  [{{{id :level-id} :path} :parameters :as _request}]
-  (let [level (level/find-one :id id)]
+  [{{{id :level-id} :path} :parameters
+    app-config             :app-config
+    :as                    _request}]
+  (let [level (level/find-by-id id app-config)]
     (if level
       {:status 200
        :body   {:level level}}
@@ -35,14 +44,16 @@
        :body   nil})))
 
 (defn get-categories-handler
-  [_request]
-  (let [categories (category/get-all)]
+  [{:keys [app-config] :as _request}]
+  (let [categories (category/get-all app-config)]
     {:status 200
      :body   {:categories categories}}))
 
 (defn get-category-handler
-  [{{{id :category-id} :path} :parameters :as _request}]
-  (let [category (category/find-one :id id)]
+  [{{{id :category-id} :path} :parameters
+    app-config                :app-config
+    :as                       _request}]
+  (let [category (category/find-by-id id app-config)]
     (if category
       {:status 200
        :body   {:category category}}

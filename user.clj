@@ -9,9 +9,9 @@
 
 (comment
   (->> @log
-       first
+       second
        #_keys
-       :donut.system/component-id)
+       #_:donut.system/component-id)
 
   (reset! log [])
   ,)

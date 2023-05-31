@@ -2,28 +2,24 @@
   (:require
    [fodsearch-api.database.interface :as db]))
 
-(defn select-all
+(defn get-all
   "Select all levels."
-  []
-  (db/query '{:find [?id ?name]
-              :keys [id name]
-              :where [[?id :level/name ?name]]}))
+  [{:keys [node] :as _app-config}]
+  (db/query
+   node
+   '{:find [?id ?name]
+     :keys [id name]
+     :where [[?id :level/name ?name]]}))
 
 ;; TODO
 ;; see repo/category
-(defn select
+(defn find-by-id
   "Select level(s) where `by = value`."
-  [by value]
-  (cond
-    (= :id by)
-    (db/query '{:find  [?name]
-                :keys  [name]
-                :in    [lvl-id]
-                :where [[lvl-id :level/name ?name]]}
-              value)
-    (= :name by)
-    (db/query '{:find  [?id]
-                :keys  [id]
-                :in    [lvl-name]
-                :where [[?id :level/name cat-name]]}
-              value)))
+  [value {:keys [node] :as _app-config}]
+  (db/query
+   node
+   '{:find  [?name]
+     :keys  [name]
+     :in    [lvl-id]
+     :where [[lvl-id :level/name ?name]]}
+   value))

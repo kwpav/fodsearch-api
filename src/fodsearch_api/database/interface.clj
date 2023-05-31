@@ -1,26 +1,37 @@
 (ns fodsearch-api.database.interface
   (:require
-   [xtdb.api :as xt]))
+   [xtdb.api :as xt]
+   [fodsearch-api.database.init :as init]))
 
-(defonce node
+(defonce node2
   (xt/start-node {}))
 
-(def query
-  (partial xt/q (xt/db node)))
+(defn query
+  [node & args]
+  (tap> {::query node})
+  (apply xt/q (xt/db node) args))
 
-(def pull
-  (partial xt/pull (xt/db node)))
+(defn pull
+  [node & args]
+  (apply xt/pull (xt/db node) args))
 
-(defn sync []
-  (xt/sync node))
+(defn sync
+  [node & args]
+  (apply xt/sync node args))
+
+(defn init-db
+  [node]
+  (let [ingredients (init/csv->ingredients (init/read-ingredients-csv))]
+    (init/put-all node ingredients)
+    (xt/sync node)))
 
 (comment
   (xt/sync node)
 
   (query
-        '{:find  [?id ?name]
-          :keys  [id name]
-          :where [[?id :level/name ?name]]})
+   '{:find  [?id ?name]
+     :keys  [id name]
+     :where [[?id :level/name ?name]]})
 
   (xt/q (xt/db node)
         '{:find  [?id ?name]

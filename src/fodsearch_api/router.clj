@@ -1,6 +1,7 @@
 (ns fodsearch-api.router
   (:require
    [fodsearch-api.api.routes :as routes]
+   [fodsearch-api.middleware.app-config :as app-config]
    [muuntaja.core :as mc]
    [reitit.coercion.malli]
    [reitit.ring :as ring]
@@ -13,9 +14,11 @@
   (ring/ring-handler
    (ring/router
     routes/routes
-    {:data {:coercion   reitit.coercion.malli/coercion
+    {:data {:app-config app-config
+            :coercion   reitit.coercion.malli/coercion
             :muuntaja   mc/instance
-            :middleware [parameters/parameters-middleware
+            :middleware [[app-config/app-config-middleware app-config]
+                         parameters/parameters-middleware
                          mmw/format-middleware
                          rrc/coerce-exceptions-middleware
                          mmw/format-request-middleware

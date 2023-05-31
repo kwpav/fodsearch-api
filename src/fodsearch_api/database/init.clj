@@ -8,9 +8,9 @@
    [malli.transform :as mt]
    [meander.match.epsilon :as mme]
    [xtdb.api :as xt]
-   [fodsearch-api.database.interface :as db]))
+   #_[fodsearch-api.database.interface :as db]))
 
-(defn- read-ingredients-csv
+(defn read-ingredients-csv
   "All ingredient data is in `resources/database/ingredients.csv`.
   This reads the csv and puts it into a map so it can be
   easily inserted into the DB with HoneySQL."
@@ -139,20 +139,20 @@
      :ingredients ingredients}))
 
 (defn put-all
-  [db data]
+  [node data]
   (let [data* (into [] data)]
     (for [[k v] data*]
       (cond
-        (map? v) (xt/submit-tx db [[::xt/put v]])
+        (map? v) (xt/submit-tx node [[::xt/put v]])
         (vector? v) (for [datum v]
-                      (xt/submit-tx db [[::xt/put datum]]))))))
+                      (xt/submit-tx node [[::xt/put datum]]))))))
 
 (comment
 
   (def ingredients
     (csv->ingredients (read-ingredients-csv)))
 
-  (put-all db/node ingredients)
-  (xt/sync db/node)
+  #_(put-all db/node ingredients)
+  #_(xt/sync db/node)
 
   :comment)
