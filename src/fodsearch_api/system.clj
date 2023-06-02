@@ -45,11 +45,18 @@
   (def running-system (ds/signal base-system ::ds/start))
   (ds/signal running-system ::ds/stop)
 
-  (db/init-db (-> running-system
+  (def node (-> running-system
+                :donut.system/instances
+                :rest-api
+                :node))
+
+  (db/init-db node #_(-> running-system
                   :donut.system/instances
                   :rest-api
                   :node
-                  xt/status))
+                  #_xt/status))
+
+  ()
 
   ;; system ns example
   ;; Use aero for all configuration

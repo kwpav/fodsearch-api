@@ -21,7 +21,7 @@
 
 (defn find-by-id
   "Select ingredient by id."
-  [value {:keys [node] :as _app-config}]
+  [id {:keys [node] :as _app-config}]
   (first
    (first
     (db/query
@@ -36,8 +36,9 @@
                                    [(:category/id {:as :id})
                                     (:category/name {:as :name})]}])]
        :in    [id]
-       :where [[?ingredient :ingredient/id id]]}
-     value))))
+       :where [[?ingredient :ingredient/name ?name]
+               [(= ?ingredient id)]]}
+     id))))
 
 ;; TODO implement this! using lucene?
 (defn search [q]

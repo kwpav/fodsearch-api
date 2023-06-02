@@ -95,7 +95,6 @@
        (mapv (fn [l]
                (let [id (random-uuid)]
                  {:xt/id      id
-                  :level/id   id
                   :level/name l})))))
 
 (defn csv->categories
@@ -107,7 +106,6 @@
        (mapv (fn [c]
                (let [id (random-uuid)]
                  {:xt/id         id
-                  :category/id   id
                   :category/name c})))))
 
 (defn csv->ingredients
@@ -119,7 +117,6 @@
                          (mapv transform-ingredient)
                          (mapv (fn [i]
                                  (-> i
-                                     (assoc :ingredient/id  (:xt/id i))
                                      (assoc :id/level
                                             (->> levels
                                                  (filter #(= (:level/name %) (:ingredient/level i)))

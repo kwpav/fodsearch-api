@@ -15,11 +15,12 @@
 ;; see repo/category
 (defn find-by-id
   "Select level(s) where `by = value`."
-  [value {:keys [node] :as _app-config}]
+  [id {:keys [node] :as _app-config}]
   (db/query
    node
-   '{:find  [?name]
-     :keys  [name]
+   '{:find  [?id ?name]
+     :keys  [id name]
      :in    [lvl-id]
-     :where [[lvl-id :level/name ?name]]}
-   value))
+     :where [[?id :level/name ?name
+              [(= ?id lvl-id)]]]}
+   id))

@@ -11,17 +11,14 @@
      :keys  [id name]
      :where [[?id :category/name ?name]]}))
 
-;; TODO
-;; - pull syntax?
-;; - make this a multimethod?
-;; or make specific commands, e.g. get-by-id?
 (defn find-by-id
   "Select category(ies) where `by = value`."
-  [value {:keys [node] :as _app-config}]
+  [id {:keys [node] :as _app-config}]
   (db/query
    node
-   '{:find  [?name]
-     :keys  [name]
+   '{:find  [?id ?name]
+     :keys  [id name]
      :in    [cat-id]
-     :where [[cat-id :category/name ?name]]}
-   value))
+     :where [[?id :category/name ?name]
+             [(= ?id cat-id)]]}
+   id))
